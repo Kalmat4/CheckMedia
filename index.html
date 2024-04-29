@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Проверка изображения</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Teko:wght@300..700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <style>
+        .bg-custom {
+            /* background-color: #253c70 !important; */
+            background: linear-gradient(23deg, #1f418b, #1343ab, #285bd1);
+
+        }
+
+        .text-shadow {
+            text-shadow: 5px 5px 5px #000;
+        }
+
+        .teko {
+            font-family: "Teko", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: bold;
+            font-style: normal;
+        }
+
+        .fs-0 {
+            font-size: 5rem;
+        }
+
+        .text-custom {
+            color: #1553d8;
+            text-shadow: 2px 2px 2px #000;
+        }
+        .bg{
+            background-color: #c8ced4 !important;
+        }
+    </style>
+</head>
+
+<body class="bg vh-100">
+    <div class="col-12 d-flex flex-column bg-custom p-5 text-center">
+        <span class="text-primary fw-bold fs-0 text-shadow teko">Check Photo</span>
+    </div>
+    <div class="col-12 d-flex flex-row align-items-center p-5">
+        <div class="check d-flex flex-column col-6">
+            <h1 class="text-custom">Проверка изображения</h1>
+            <br>
+            <input type="text" id="imageUrl" class="form-control mb-3 fs-4 text-center"
+                placeholder="Введите URL изображения">
+
+            <button class="btn btn-primary fs-5 p-4" onclick="checkImage()">Проверить</button>
+        </div>
+
+
+        <div class="col-6 d-flex flex-row justify-content-center">
+            <img src="https://www.vastas.com/wp-content/uploads/2019/12/placeholder.jpg" class="col-8 rounded img border border-primary border-2">
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        function checkImage() {
+            var imageUrl = document.getElementById("imageUrl").value;
+            var url = "https://api.edenai.run/v2/image/explicit_content";
+            var jsonPayload = {
+                "providers": "google",
+                "file_url": imageUrl,
+                "fallback_providers": ""
+            };
+
+
+            var headers = {
+                "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiYzQwOTBhY2MtNzhlNC00NTBlLTlkNTAtNThiN2YxZmJmNGEyIiwidHlwZSI6ImFwaV90b2tlbiJ9.Noxx9xKYQIWoGDAo1GCzJYP-Y4b5g8zY6R5156LKkLs"
+            };
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    ...headers
+                },
+                body: JSON.stringify(jsonPayload)
+            })
+                .then(response => response.json())
+                .then(result => {
+                    if ('google' in result && 'items' in result['google']) {
+                        var googleItems = result['google']['items'];
+                        var isAdult = false;
+                        for (var i = 0; i < googleItems.length; i++) {
+                            if (googleItems[i]['label'] === 'Adult' && googleItems[i]['likelihood'] > 2) {
+                                isAdult = true;
+                                break;
+                            }
+                        }
+                        if (isAdult) {
+                            Swal.fire({
+                                icon: 'warning',
+                                title: 'Этот контент для взрослых',
+                                text: 'Пожалуйста, будьте осторожны.'
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Этот контент нормальный',
+                                text: 'Можно безопасно просматривать.'
+                            });
+                            
+                            document.querySelector('.img').setAttribute('src', imageUrl);
+                        }
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Не удалось получить данные от Google',
+                            text: 'Попробуйте еще раз или проверьте URL изображения.'
+                        });
+                    }
+                })
+                .catch(error => {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Произошла ошибка при отправке запроса',
+                        text: 'Пожалуйста, проверьте интернет-соединение и попробуйте еще раз.'
+                    });
+                });
+        }
+    </script>
+</body>
+
+</html>
