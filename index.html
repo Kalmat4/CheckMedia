@@ -39,6 +39,9 @@
         .bg{
             background-color: #c8ced4 !important;
         }
+        .filter{
+            filter: blur(30px);
+        }
     </style>
 </head>
 
@@ -102,6 +105,9 @@
                                 title: 'Этот контент для взрослых',
                                 text: 'Пожалуйста, будьте осторожны.'
                             });
+                            
+                            document.querySelector('.img').setAttribute('src', imageUrl);
+                            document.querySelector('.img').classList.add('filter');
                         } else {
                             Swal.fire({
                                 icon: 'success',
