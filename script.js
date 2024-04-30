@@ -3,12 +3,11 @@ function checkImage() {
     var url = "https://api.edenai.run/v2/image/explicit_content";
     var jsonPayload = {
         "providers": "google",
-        "file_url": imageUrl,
-        "fallback_providers": ""
+        "file_url": imageUrl
     };
 
     var headers = {
-        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiYzQwOTBhY2MtNzhlNC00NTBlLTlkNTAtNThiN2YxZmJmNGEyIiwidHlwZSI6ImFwaV90b2tlbiJ9.Noxx9xKYQIWoGDAo1GCzJYP-Y4b5g8zY6R5156LKkLs"
+        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiYjc4ZWZhNWYtNDE1Mi00ZjM4LWFmZDAtM2ZmZmNkYzgzZDZmIiwidHlwZSI6ImFwaV90b2tlbiJ9.1Fy5yCpnTKUVJvyzHKLG2P-c_QxjMi8MYE2kHbwlgzI"
     };
 
     fetch(url, {
