@@ -39,9 +39,6 @@
         .bg{
             background-color: #c8ced4 !important;
         }
-        .filter{
-            filter: blur(20px);
-        }
     </style>
 </head>
 
@@ -61,11 +58,13 @@
 
 
         <div class="col-6 d-flex flex-row justify-content-center">
-            <img src="https://www.vastas.com/wp-content/uploads/2019/12/placeholder.jpg" class="col-8 rounded border border-primary border-2">
+            <img src="https://www.vastas.com/wp-content/uploads/2019/12/placeholder.jpg" class="col-8 rounded img border border-primary border-2">
         </div>
     </div>
+
+    <!-- <script src="script.js"></script> -->
     <script>
-        function checkImage() {
+       function checkImage() {
             var imageUrl = document.getElementById("imageUrl").value;
             var url = "https://api.edenai.run/v2/image/explicit_content";
             var jsonPayload = {
@@ -103,9 +102,6 @@
                                 title: 'Этот контент для взрослых',
                                 text: 'Пожалуйста, будьте осторожны.'
                             });
-                            
-                            document.querySelector('.img').setAttribute('src', imageUrl);
-                            document.querySelector('.img').classList.add('filter');
                         } else {
                             Swal.fire({
                                 icon: 'success',
