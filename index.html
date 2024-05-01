@@ -171,8 +171,8 @@
                                 text: 'Пожалуйста, будьте осторожны.'
                             });
 
-                            document.querySelector('.img').setAttribute('src', imageUrl);
                             document.querySelector('.img').classList.add('filter');
+                            document.querySelector('.img').setAttribute('src', imageUrl);
                         } else {
                             Swal.fire({
                                 icon: 'success',
@@ -181,7 +181,9 @@
                             });
 
                             document.querySelector('.img').setAttribute('src', imageUrl);
-                            document.querySelector('.img').classList.remove('filter');
+                            setTimeout(() => {
+                                document.querySelector('.img').classList.remove('filter');
+                            }, 1000);
                         }
                     } else {
                         Swal.fire({
